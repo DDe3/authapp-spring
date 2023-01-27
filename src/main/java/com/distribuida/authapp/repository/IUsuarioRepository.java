@@ -1,6 +1,6 @@
 package com.distribuida.authapp.repository;
 
-import com.distribuida.authapp.service.model.Usuario;
+import com.distribuida.authapp.security.model.Usuario;
 
 public interface IUsuarioRepository {
 

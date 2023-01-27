@@ -5,7 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.distribuida.authapp.repository.IUsuarioRepository;
-import com.distribuida.authapp.service.model.Usuario;
+import com.distribuida.authapp.security.model.Usuario;
 import com.distribuida.authapp.to.UsuarioTo;
 
 
