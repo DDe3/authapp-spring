@@ -4,7 +4,7 @@ package com.distribuida.authapp.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.distribuida.authapp.security.model.Usuario;
+import com.distribuida.authapp.repository.model.Usuario;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;

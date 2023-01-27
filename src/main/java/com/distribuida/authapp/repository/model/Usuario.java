@@ -1,4 +1,4 @@
-package com.distribuida.authapp.security.model;
+package com.distribuida.authapp.repository.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
