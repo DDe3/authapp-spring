@@ -1,5 +1,8 @@
 package com.distribuida.authapp.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,14 +23,14 @@ public class UsuarioServiceImpl implements IUsuarioService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public String RegisterUsuario(UsuarioTo usuario) {
-        String response = usuarioRepo.InsertUsuario(UsuarioFromUsuarioTo(usuario));
+    public String registerUsuario(UsuarioTo usuario) {
+        String response = usuarioRepo.insertUsuario(usuarioFromUsuarioTo(usuario));
         return response;
     }
 
     @Override
-    public String AuthenticateUsuario(UsuarioTo usuario) {
-        Usuario toAuthenticate = usuarioRepo.SearchUsuarioByUserName(usuario.username);
+    public String authenticateUsuario(UsuarioTo usuario) {
+        Usuario toAuthenticate = usuarioRepo.searchUsuarioByUserName(usuario.username);
         if (toAuthenticate == null) return "Usuario no existe";
         else {
             if (passwordEncoder.matches(usuario.password, toAuthenticate.getPassword())) return "Autenticado";
@@ -38,23 +41,50 @@ public class UsuarioServiceImpl implements IUsuarioService {
     }
 
     @Override
-    public String UpdatePasswordFromUsuario(UsuarioTo usuario) {
-        Usuario toUpdate = usuarioRepo.SearchUsuarioByUserName(usuario.username);
+    public String updatePasswordFromUsuario(UsuarioTo usuario) {
+        Usuario toUpdate = usuarioRepo.searchUsuarioByUserName(usuario.username);
         if (toUpdate == null) return "El usuario " + usuario.username + " no existe";
         else {
             if (passwordEncoder.matches(usuario.password, toUpdate.getPassword())) return "El password debe ser diferente al actual";
             else {
                 toUpdate.setPassword(passwordEncoder.encode(usuario.password));
-                return usuarioRepo.UpdateUsuario(toUpdate);
+                return usuarioRepo.updateUsuario(toUpdate);
             }
         }
     }
 
-    private Usuario UsuarioFromUsuarioTo(UsuarioTo user) {
+    private Usuario usuarioFromUsuarioTo(UsuarioTo user) {
         Usuario usuario = new Usuario();
         usuario.setusername(user.username);
         usuario.setPassword(passwordEncoder.encode(user.password));
         return usuario;
+    }
+
+    @Override
+    public List<UsuarioTo> getAllUsuarios() {
+        List<Usuario> usuarios = usuarioRepo.getAllUsuarios();
+        List<UsuarioTo> usuariosTo = new ArrayList<>();
+        for (int i = 0; i < usuarios.size(); i++) {
+            usuariosTo.add(usuarioToFromUsuario(usuarios.get(i)));
+        }
+        return usuariosTo;
+
+    }
+
+    private UsuarioTo usuarioToFromUsuario(Usuario usuario) {
+        UsuarioTo ret = new UsuarioTo();
+        ret.username = usuario.getusername();
+        ret.password = usuario.getPassword();
+        return ret;
+    }
+
+    @Override
+    public String deleteUsuario(String username) {
+        Usuario toDelete = usuarioRepo.searchUsuarioByUserName(username);
+        if (toDelete==null) {
+            return "Usuario no existe";
+        }
+        return usuarioRepo.deleteUsuario(toDelete);
     }
 
     

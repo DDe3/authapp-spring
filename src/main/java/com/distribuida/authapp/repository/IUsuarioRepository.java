@@ -1,11 +1,15 @@
 package com.distribuida.authapp.repository;
 
+import java.util.List;
+
 import com.distribuida.authapp.repository.model.Usuario;
 
 public interface IUsuarioRepository {
 
-    String InsertUsuario(Usuario user);
-    String UpdateUsuario(Usuario user);
-    Usuario SearchUsuarioByUserName(String userName);
+    String insertUsuario(Usuario user);
+    String updateUsuario(Usuario user);
+    Usuario searchUsuarioByUserName(String userName);
+    List<Usuario> getAllUsuarios();
+    String deleteUsuario(Usuario user);
 
 }

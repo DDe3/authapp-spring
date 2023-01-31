@@ -1,6 +1,8 @@
 package com.distribuida.authapp.repository;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -19,8 +21,8 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
 	private EntityManager em;
 
     @Override
-    public String InsertUsuario(Usuario user) {
-        Usuario toRegister = SearchUsuarioByUserName(user.getusername());
+    public String insertUsuario(Usuario user) {
+        Usuario toRegister = searchUsuarioByUserName(user.getusername());
         if (toRegister != null) return "Usuario ya registrado"; 
         else 
         {
@@ -30,14 +32,14 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
     }
 
     @Override
-    public String UpdateUsuario(Usuario user) {
+    public String updateUsuario(Usuario user) {
         em.merge(user);
         return "Password Actualizada";
     }
 
 
     @Override
-    public Usuario SearchUsuarioByUserName(String userName) {
+    public Usuario searchUsuarioByUserName(String userName) {
         try {
             TypedQuery<Usuario> mq = em.createQuery("SELECT c FROM Usuario c WHERE c.username=:userName",Usuario.class);
 		    mq.setParameter("userName", userName);
@@ -46,6 +48,18 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
             return null;
         }
 		
+    }
+
+    @Override
+    public List<Usuario> getAllUsuarios() {
+        TypedQuery<Usuario> tq = em.createQuery("SELECT c FROM Usuario c",Usuario.class);
+		return tq.getResultList();
+    }
+
+    @Override
+    public String deleteUsuario(Usuario user) {
+        em.remove(user);
+        return "Usuario eliminado";
     }
 
     
